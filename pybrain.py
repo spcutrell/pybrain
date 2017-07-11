@@ -3,61 +3,60 @@
 import sys
 
 def get_input(argv):
-    if len(argv) > 1:
-        if argv[1] == '-':
-            f = sys.stdin
-        else:
-            f = open(argv[1])
-    else:
-        f = sys.stdin
-    with f:
+    with open(argv[1]) as f:
         data = f.read()
-
     return list(data)
 
 def get_bf_instr(bf_code):
-    valid_instr = {
-        '>'
-        ,'<',
-        '+',
-        '-',
-        '.',
-        ',',
-        '[',
-        ']'
-    }
+    valid_instr = {'>','<','+','-','.',',','[',']'}
     return [c for c in bf_code if c in valid_instr]
 
 def interpret(instr):
     res_ptr = 0
     instr_ptr = 0;
     res_arr = [0]*len(instr)
-    
+    brackets = list()
     while instr_ptr < len(instr):
         if instr[instr_ptr] == '>':
             res_ptr +=1
-            instr_ptr += 1
         elif instr[instr_ptr] == '<':
             res_ptr -=1
-            instr_ptr += 1
         elif instr[instr_ptr] == '+':
             res_arr[res_ptr] = (res_arr[res_ptr] + 1) % 255
-            instr_ptr += 1
         elif instr[instr_ptr] == '-':
             res_arr[res_ptr] = (res_arr[res_ptr] - 1) % 255
-            instr_ptr += 1
         elif instr[instr_ptr] == '.':
             print(chr(res_arr[res_ptr]), end='')
-            instr_ptr += 1
         elif instr[instr_ptr] == ',':
             res_arr[res_ptr] = ord(input())
-            instr_ptr += 1
         elif instr[instr_ptr] == '[':
-            pass
+            brackets.append(instr_ptr)
+            if not res_arr[res_ptr]:
+                instr_ptr = skip_open_bracket(instr_ptr, instr)
+                continue;
         elif instr[instr_ptr] == ']':
-            pass
+            if res_arr[res_ptr]:
+                instr_ptr = brackets.pop()
+            else:
+                brackets.pop()
+                instr_ptr += 1
+            continue;
+        res = (res_arr[res_ptr], instr_ptr, brackets)
+        #print(res)
+        instr_ptr += 1
+
+def skip_open_bracket(ptr, arr):
+    brackets = 1
+    while brackets:
+        ptr += 1
+        if arr[ptr] == '[':
+            brackets += 1
+        if arr[ptr] == ']':
+            brackets -= 1
+    return ptr
 
 if __name__ == "__main__":
     inpt = get_input(sys.argv)
     instr = get_bf_instr(inpt)
+    #print(instr)
     interpret(instr)
