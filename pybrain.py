@@ -2,6 +2,8 @@
 
 import sys
 
+MAX = 30000
+
 def get_input(argv):
     with open(argv[1]) as f:
         data = f.read()
@@ -14,13 +16,13 @@ def get_bf_instr(bf_code):
 def interpret(instr):
     res_ptr = 0
     instr_ptr = 0;
-    res_arr = [0]*len(instr)
+    res_arr = [0] * MAX
     brackets = list()
     while instr_ptr < len(instr):
         if instr[instr_ptr] == '>':
-            res_ptr +=1
+            res_ptr += 1
         elif instr[instr_ptr] == '<':
-            res_ptr -=1
+            res_ptr -= 1
         elif instr[instr_ptr] == '+':
             res_arr[res_ptr] = (res_arr[res_ptr] + 1) % 255
         elif instr[instr_ptr] == '-':
