@@ -34,26 +34,20 @@ def interpret(instr):
         elif instr[instr_ptr] == '[':
             brackets.append(instr_ptr)
             if not res_arr[res_ptr]:
-                instr_ptr = skip_open_bracket(instr_ptr, instr)
-                continue;
+                instr_ptr += 1
+                bal = 1
+                while bal:
+                    if instr[instr_ptr] == '[':
+                        bal +=1
+                    elif instr[instr_ptr] == ']':
+                        bal -= 1
         elif instr[instr_ptr] == ']':
             if res_arr[res_ptr]:
                 instr_ptr = brackets.pop()
+                continue;
             else:
                 brackets.pop()
-                instr_ptr += 1
-            continue;
         instr_ptr += 1
-
-def skip_open_bracket(ptr, arr):
-    brackets = 1
-    while brackets:
-        ptr += 1
-        if arr[ptr] == '[':
-            brackets += 1
-        if arr[ptr] == ']':
-            brackets -= 1
-    return ptr
 
 def main():
     inpt = get_input(sys.argv)
