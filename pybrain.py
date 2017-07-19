@@ -24,23 +24,25 @@ def interpret(instr):
         elif instr[instr_ptr] == '<':
             res_ptr -= 1
         elif instr[instr_ptr] == '+':
-            res_arr[res_ptr] = (res_arr[res_ptr] + 1) % 256
+            res_arr[res_ptr] = (res_arr[res_ptr] + 1) % 255
         elif instr[instr_ptr] == '-':
-            res_arr[res_ptr] = (res_arr[res_ptr] - 1) % 256
+            res_arr[res_ptr] = (res_arr[res_ptr] - 1) % 255
         elif instr[instr_ptr] == '.':
             print(chr(res_arr[res_ptr]), end='')
         elif instr[instr_ptr] == ',':
             res_arr[res_ptr] = ord(input())
         elif instr[instr_ptr] == '[':
-            brackets.append(instr_ptr)
             if not res_arr[res_ptr]:
-                instr_ptr += 1
                 bal = 1
+                instr_ptr += 1
                 while bal:
                     if instr[instr_ptr] == '[':
                         bal +=1
                     elif instr[instr_ptr] == ']':
                         bal -= 1
+                    instr_ptr += 1
+                continue;
+            brackets.append(instr_ptr)
         elif instr[instr_ptr] == ']':
             if res_arr[res_ptr]:
                 instr_ptr = brackets.pop()
