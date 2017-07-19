@@ -24,9 +24,9 @@ def interpret(instr):
         elif instr[instr_ptr] == '<':
             res_ptr -= 1
         elif instr[instr_ptr] == '+':
-            res_arr[res_ptr] = (res_arr[res_ptr] + 1) % 255
+            res_arr[res_ptr] = (res_arr[res_ptr] + 1) % 256
         elif instr[instr_ptr] == '-':
-            res_arr[res_ptr] = (res_arr[res_ptr] - 1) % 255
+            res_arr[res_ptr] = (res_arr[res_ptr] - 1) % 256
         elif instr[instr_ptr] == '.':
             print(chr(res_arr[res_ptr]), end='')
         elif instr[instr_ptr] == ',':
