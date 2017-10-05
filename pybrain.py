@@ -34,19 +34,16 @@ def interpret(instr):
         elif instr[instr_ptr] == '[':
             if not res_arr[res_ptr]:
                 bal = 1
-                instr_ptr += 1
                 while bal:
+                    instr_ptr += 1
                     if instr[instr_ptr] == '[':
                         bal +=1
                     elif instr[instr_ptr] == ']':
                         bal -= 1
-                    instr_ptr += 1
-                continue;
             brackets.append(instr_ptr)
         elif instr[instr_ptr] == ']':
             if res_arr[res_ptr]:
-                instr_ptr = brackets.pop()
-                continue;
+                instr_ptr = brackets.pop() - 1
             else:
                 brackets.pop()
         instr_ptr += 1
